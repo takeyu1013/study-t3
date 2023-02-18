@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { env } from "../../../env.mjs";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
@@ -13,6 +14,11 @@ export const exampleRouter = createTRPCRouter({
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
+  }),
+
+  myProcedure: publicProcedure.query(() => {
+    console.debug(env.HOGE);
+    return { hoge: "fuga" };
   }),
 
   getSecretMessage: protectedProcedure.query(() => {
