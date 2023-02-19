@@ -4,22 +4,41 @@ import { z } from "zod";
 export const micropostRouter = createTRPCRouter({
   getUserMicroposts: publicProcedure
     .input(z.object({ userId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      return await ctx.prisma.micropost.findMany({
-        where: { userId: input.userId },
-      });
-    }),
+    .query(
+      async ({
+        ctx: {
+          prisma: {
+            micropost: { findMany },
+          },
+        },
+        input: { userId },
+      }) => {
+        return await findMany({
+          where: { userId },
+        });
+      }
+    ),
   createMicropost: publicProcedure
     .input(
       z.object({ userId: z.string(), content: z.string().max(140).min(1) })
     )
-    .mutation(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.findUniqueOrThrow({
-        where: { id: input.userId },
-      });
+    .mutation(
+      async ({
+        ctx: {
+          prisma: {
+            micropost: { create },
+            user: { findUniqueOrThrow },
+          },
+        },
+        input: { userId, content },
+      }) => {
+        const { id } = await findUniqueOrThrow({
+          where: { id: userId },
+        });
 
-      return await ctx.prisma.micropost.create({
-        data: { content: input.content, user: { connect: { id: user.id } } },
-      });
-    }),
+        return await create({
+          data: { content, user: { connect: { id } } },
+        });
+      }
+    ),
 });

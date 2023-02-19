@@ -3,14 +3,28 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
-  getUsers: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.user.findMany();
-  }),
-  getOneUser: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.findUnique({
-        where: { id: input.userId },
+  getUsers: publicProcedure.query(
+    async ({
+      ctx: {
+        prisma: {
+          user: { findMany },
+        },
+      },
+    }) => {
+      return await findMany();
+    }
+  ),
+  getOneUser: publicProcedure.input(z.object({ userId: z.string() })).query(
+    async ({
+      ctx: {
+        prisma: {
+          user: { findUnique },
+        },
+      },
+      input: { userId: id },
+    }) => {
+      const user = await findUnique({
+        where: { id },
       });
 
       if (user) {
@@ -20,5 +34,6 @@ export const userRouter = createTRPCRouter({
           code: "NOT_FOUND",
         });
       }
-    }),
+    }
+  ),
 });
