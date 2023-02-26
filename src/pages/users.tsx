@@ -4,8 +4,18 @@ import { api } from "../utils/api";
 
 const UserIndexPage: NextPage = () => {
   const { data } = api.user.getUsers.useQuery();
+  const {
+    user: {
+      getUsers: { invalidate },
+    },
+  } = api.useContext();
+  const { mutate, isLoading, error } = api.user.deleteUser.useMutation({
+    onSuccess: async () => {
+      await invalidate();
+    },
+  });
 
-  if (!data) {
+  if (!data || isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -22,16 +32,22 @@ const UserIndexPage: NextPage = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map(({ name, email }, index) => {
+            {data.map(({ id, name, email }) => {
               return (
-                <tr key={index}>
+                <tr key={id}>
                   <td className="py-1 pr-2">{name}</td>
                   <td className="py-1 pr-2">{email}</td>
                   <td className="py-1 pr-2">
                     <Link href="#">Edit</Link>
                   </td>
                   <td className="py-1 pr-2">
-                    <Link href="#">Destroy</Link>
+                    <button
+                      onClick={() => {
+                        mutate({ id });
+                      }}
+                    >
+                      Destroy
+                    </button>
                   </td>
                 </tr>
               );
@@ -42,6 +58,7 @@ const UserIndexPage: NextPage = () => {
       <Link href="/users/new" className="underline">
         New User
       </Link>
+      <div>{error && error.message}</div>
     </main>
   );
 };

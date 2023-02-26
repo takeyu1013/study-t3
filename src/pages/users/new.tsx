@@ -7,10 +7,25 @@ const New: NextPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  const { mutate, isLoading, error } = api.user.createUser.useMutation({
+    onSuccess: () => {
+      setName("");
+      setEmail("");
+    },
+  });
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <main className="p-8">
       <h1 className="pb-4 text-4xl font-bold">New User</h1>
-      <form>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          mutate({ name, email });
+        }}
+      >
         <div className="pb-4">
           <label className="block">Name</label>
           <input
@@ -32,23 +47,7 @@ const New: NextPage = () => {
           />
         </div>
         <div className="pb-4">
-          <button
-            className="rounded border px-2"
-            onClick={({ preventDefault }) => {
-              preventDefault();
-              console.log(
-                api.user.createUser
-                  .useMutation({
-                    onSuccess: async () => {
-                      setName("");
-                      setEmail("");
-                      await api.useContext().user.getUsers.invalidate();
-                    },
-                  })
-                  .mutate({ name, email })
-              );
-            }}
-          >
+          <button className="rounded border px-2" type="submit">
             Create User
           </button>
         </div>
@@ -56,6 +55,7 @@ const New: NextPage = () => {
       <Link href="/users" className="underline">
         Back
       </Link>
+      <div>{error && error.message}</div>
     </main>
   );
 };

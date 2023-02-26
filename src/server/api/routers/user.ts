@@ -50,4 +50,16 @@ export const userRouter = createTRPCRouter({
         return await create({ data: { name, email } });
       }
     ),
+  deleteUser: publicProcedure.input(z.object({ id: z.string() })).mutation(
+    async ({
+      ctx: {
+        prisma: {
+          user: { delete: deleteUser },
+        },
+      },
+      input: { id },
+    }) => {
+      return await deleteUser({ where: { id } });
+    }
+  ),
 });
