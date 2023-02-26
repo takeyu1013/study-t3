@@ -36,4 +36,18 @@ export const userRouter = createTRPCRouter({
       }
     }
   ),
+  createUser: publicProcedure
+    .input(z.object({ name: z.string(), email: z.string() }))
+    .mutation(
+      async ({
+        ctx: {
+          prisma: {
+            user: { create },
+          },
+        },
+        input: { name, email },
+      }) => {
+        return await create({ data: { name, email } });
+      }
+    ),
 });
