@@ -7,7 +7,12 @@ const New: NextPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const { mutate, isLoading, error } = api.user.createUser.useMutation({
+  const {
+    user: {
+      createUser: { useMutation },
+    },
+  } = api;
+  const { mutate, isLoading, error } = useMutation({
     onSuccess: () => {
       setName("");
       setEmail("");

@@ -3,19 +3,25 @@ import Link from "next/link";
 import { api } from "../utils/api";
 
 const UserIndexPage: NextPage = () => {
-  const { data } = api.user.getUsers.useQuery();
+  const {
+    user: {
+      getUsers: { useSuspenseQuery },
+      deleteUser: { useMutation },
+    },
+  } = api;
+  const [users] = useSuspenseQuery();
   const {
     user: {
       getUsers: { invalidate },
     },
   } = api.useContext();
-  const { mutate, isLoading, error } = api.user.deleteUser.useMutation({
+  const { mutate, isLoading, error } = useMutation({
     onSuccess: async () => {
       await invalidate();
     },
   });
 
-  if (!data || isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -32,7 +38,7 @@ const UserIndexPage: NextPage = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, email }) => {
+            {users.map(({ id, name, email }) => {
               return (
                 <tr key={id}>
                   <td className="py-1 pr-2">{name}</td>
