@@ -34,7 +34,7 @@ const UserIndexPage: NextPage = () => {
             <tr>
               <th className="pb-1">Name</th>
               <th className="pb-1">Email</th>
-              <th className="pb-1" colSpan={3}></th>
+              <th className="pb-1" colSpan={3} />
             </tr>
           </thead>
           <tbody>
