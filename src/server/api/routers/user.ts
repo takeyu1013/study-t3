@@ -54,12 +54,12 @@ export const userRouter = createTRPCRouter({
     async ({
       ctx: {
         prisma: {
-          user: { delete: deleteUser },
+          user: { delete: remove },
         },
       },
       input: { id },
     }) => {
-      return await deleteUser({ where: { id } });
+      return await remove({ where: { id } });
     }
   ),
 });

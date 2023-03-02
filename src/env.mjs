@@ -22,7 +22,6 @@ const server = z.object({
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
-  HOGE: z.string(),
 });
 
 /**
@@ -32,7 +31,6 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
-  NEXT_PUBLIC_FUGA: z.string(),
 });
 
 /**
@@ -48,8 +46,6 @@ const processEnv = {
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
-  HOGE: process.env.HOGE,
-  NEXT_PUBLIC_FUGA: process.env.NEXT_PUBLIC_FUGA,
 };
 
 // Don't touch the part below
