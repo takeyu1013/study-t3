@@ -1,6 +1,7 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const userRouter = createTRPCRouter({
   getUsers: publicProcedure.query(

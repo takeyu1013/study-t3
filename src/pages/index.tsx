@@ -1,8 +1,6 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 
-import Title from "../components/title";
-
 const Home: NextPage = () => {
   return (
     <>

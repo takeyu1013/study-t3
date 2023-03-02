@@ -1,6 +1,6 @@
-import { createTRPCRouter } from "./trpc";
-import { userRouter } from "./routers/user";
 import { micropostRouter } from "./routers/micropost";
+import { userRouter } from "./routers/user";
+import { createTRPCRouter } from "./trpc";
 
 /**
  * This is the primary router for your server.
