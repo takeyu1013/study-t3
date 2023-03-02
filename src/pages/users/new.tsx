@@ -24,7 +24,7 @@ const New: NextPage = () => {
   }
 
   return (
-    <main className="p-8">
+    <div className="p-8">
       <h1 className="pb-4 text-4xl font-bold">New User</h1>
       <form
         onSubmit={(event) => {
@@ -62,7 +62,7 @@ const New: NextPage = () => {
         Back
       </Link>
       <div>{error && error.message}</div>
-    </main>
+    </div>
   );
 };
 

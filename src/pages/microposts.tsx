@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Microposts: NextPage = () => {
   return (
-    <main>
+    <>
       <h1>Microposts</h1>
       <table>
         <thead>
@@ -14,7 +14,7 @@ const Microposts: NextPage = () => {
         </thead>
       </table>
       <Link href="microposts/new">New Micropost</Link>
-    </main>
+    </>
   );
 };
 

@@ -27,7 +27,7 @@ const UserIndexPage: NextPage = () => {
   }
 
   return (
-    <main className="p-8">
+    <div className="p-8">
       <h1 className="pb-4 text-4xl font-bold">Users</h1>
       <div className="pb-4">
         <table>
@@ -66,7 +66,7 @@ const UserIndexPage: NextPage = () => {
         New User
       </Link>
       <div>{error && error.message}</div>
-    </main>
+    </div>
   );
 };
 

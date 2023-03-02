@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const New: NextPage = () => {
   return (
-    <main>
+    <>
       <h1>New Micropost</h1>
       <form
         onSubmit={(event) => {
@@ -25,7 +25,7 @@ const New: NextPage = () => {
         <button type="submit">Create Micropost</button>
       </form>
       <Link href="/microposts">Back</Link>
-    </main>
+    </>
   );
 };
 
