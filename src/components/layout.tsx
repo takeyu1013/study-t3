@@ -3,26 +3,69 @@ import type { FC, ReactNode } from "react";
 
 import Title from "./title";
 
+const Anchor: FC<{ children: ReactNode; href: string }> = ({
+  children,
+  href,
+}) => (
+  <a
+    href={href}
+    className="text-[#555555] hover:text-[#222222] hover:underline"
+  >
+    {children}
+  </a>
+);
+
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
       <Title />
-      <header>
-        <nav>
-          <ul>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="#">Help</Link>
-            </li>
-            <li>
-              <Link href="#">Log in</Link>
-            </li>
+      <header className="flex justify-center border-b border-[#090909] bg-neutral-800 px-28">
+        <nav className="flex max-w-[1140px] grow items-center justify-between">
+          <Link
+            href="/"
+            className="text-2xl font-bold uppercase tracking-[-1px] text-white"
+          >
+            sample app
+          </Link>
+          <ul className="flex gap-[30px] py-[15px]">
+            {["Home", "Help", "Log in"].map((text, index) => (
+              <li key={index} className="h-5">
+                <Link href="#" className="text-sm text-neutral-400">
+                  {text}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </header>
-      <main>{children}</main>
+      <div className="flex justify-center">
+        <div className="max-w-[1140px] grow">
+          <main>{children}</main>
+          <footer className="flex justify-between border-t border-[#eaeaea] pt-[5px]">
+            <small className="text-[#777777]">
+              The{" "}
+              <Anchor href="https://railstutorial.jp/">
+                Ruby on Rails Tutorial
+              </Anchor>{" "}
+              by{" "}
+              <Anchor href="https://www.michaelhartl.com/">
+                Michael Hartl
+              </Anchor>
+            </small>
+            <nav>
+              <ul className="flex gap-[15px]">
+                {["About", "Contact", "News"].map((text, index) => (
+                  <li key={index} className="h-5">
+                    <Link href="#" className="text-sm text-[#555555]">
+                      {text}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </footer>
+        </div>
+      </div>
     </>
   );
 };
