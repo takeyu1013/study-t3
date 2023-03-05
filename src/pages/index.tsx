@@ -26,13 +26,16 @@ const Home: NextPage = () => {
           Sign up now!
         </Link>
       </div>
-      <Image
-        className="pt-[30px] pb-[45px]"
-        alt="Rails logo"
-        width={200}
-        height={70}
-        src="https://cdn.learnenough.com/rails.svg"
-      />
+      <div className="pt-[30px] pb-[45px]">
+        <a href="https://rubyonrails.org/">
+          <Image
+            alt="Rails logo"
+            width={200}
+            height={70}
+            src="https://cdn.learnenough.com/rails.svg"
+          />
+        </a>
+      </div>
     </div>
   );
 };

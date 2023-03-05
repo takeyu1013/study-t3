@@ -30,7 +30,10 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           <ul className="flex gap-[30px] py-[15px]">
             {["Home", "Help", "Log in"].map((text, index) => (
               <li key={index} className="h-5">
-                <Link href="#" className="text-sm text-neutral-400">
+                <Link
+                  href="#"
+                  className="text-sm text-[#9d9d9d] hover:text-white"
+                >
                   {text}
                 </Link>
               </li>
@@ -56,7 +59,10 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
               <ul className="flex gap-[15px]">
                 {["About", "Contact", "News"].map((text, index) => (
                   <li key={index} className="h-5">
-                    <Link href="#" className="text-sm text-[#555555]">
+                    <Link
+                      href="#"
+                      className="text-sm text-[#555555] hover:text-[#222222] hover:underline"
+                    >
                       {text}
                     </Link>
                   </li>
