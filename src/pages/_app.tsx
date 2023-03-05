@@ -2,7 +2,7 @@ import "../styles/globals.css";
 
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
 import { Suspense } from "react";
 
 import Layout from "../components/layout";
@@ -21,6 +21,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
       </Layout>
     </SessionProvider>
   );
+};
+
+MyApp.getInitialProps = async ({ ctx }) => {
+  return {
+    session: await getSession(ctx),
+  };
 };
 
 export default api.withTRPC(MyApp);
