@@ -33,6 +33,7 @@ const Home: NextPage = () => {
             width={200}
             height={70}
             src="https://cdn.learnenough.com/rails.svg"
+            className="inline"
           />
         </a>
       </div>

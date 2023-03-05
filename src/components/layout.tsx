@@ -19,11 +19,11 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
       <Title />
-      <header className="flex justify-center border-b border-[#090909] bg-neutral-800 px-28">
+      <header className="flex justify-center border-b border-[#090909] bg-neutral-800 px-[130px] ">
         <nav className="flex max-w-[1140px] grow items-center justify-between">
           <Link
             href="/"
-            className="text-2xl font-bold uppercase tracking-[-1px] text-white"
+            className="text-[1.7em] font-bold uppercase tracking-[-1px] text-white"
           >
             sample app
           </Link>
@@ -41,7 +41,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
           </ul>
         </nav>
       </header>
-      <div className="flex justify-center">
+      <div className="flex justify-center px-[130px]">
         <div className="max-w-[1140px] grow">
           <main>{children}</main>
           <footer className="flex justify-between border-t border-[#eaeaea] pt-[5px]">
