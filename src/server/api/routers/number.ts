@@ -5,9 +5,9 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const numberRouter = createTRPCRouter({
   randomNumber: publicProcedure.subscription(() => {
-    return observable<number>((emit) => {
+    return observable<number>(({ next }) => {
       const int = setInterval(() => {
-        emit.next(Math.random());
+        next(Math.random());
       }, 500);
       return () => {
         clearInterval(int);

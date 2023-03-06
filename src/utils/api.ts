@@ -24,19 +24,10 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
-const getEndingLink = (ctx: NextPageContext | undefined) => {
+const getEndingLink = () => {
   if (typeof window === "undefined") {
     return httpBatchLink({
       url: `${getBaseUrl()}/api/trpc`,
-      headers() {
-        if (ctx?.req) {
-          return {
-            ...ctx.req.headers,
-            "x-ssr": "1",
-          };
-        }
-        return {};
-      },
     });
   }
   const client = createWSClient({
@@ -53,7 +44,7 @@ export const api = createTRPCNext<
   NextPageContext,
   "ExperimentalSuspense"
 >({
-  config({ ctx }) {
+  config() {
     return {
       /**
        * Transformer used for data de-serialization from the server.
@@ -73,7 +64,7 @@ export const api = createTRPCNext<
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        getEndingLink(ctx),
+        getEndingLink(),
       ],
     };
   },

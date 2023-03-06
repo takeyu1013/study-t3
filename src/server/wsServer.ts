@@ -6,7 +6,7 @@ import { createTRPCContext } from "./api/trpc";
 
 const wss = new ws.Server({ port: 3001 });
 
-const handler = applyWSSHandler({
+const { broadcastReconnectNotification } = applyWSSHandler({
   wss,
   router: appRouter,
   createContext: createTRPCContext,
@@ -22,6 +22,6 @@ console.log("WebSocket Server");
 
 process.on("SIGTERM", () => {
   console.log("SIGTERM");
-  handler.broadcastReconnectNotification();
+  broadcastReconnectNotification();
   wss.close();
 });
