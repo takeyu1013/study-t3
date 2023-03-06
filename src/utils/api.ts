@@ -9,6 +9,7 @@ import {
   createWSClient,
   httpBatchLink,
   loggerLink,
+  splitLink,
   wsLink,
 } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
@@ -30,11 +31,19 @@ const getEndingLink = () => {
       url: `${getBaseUrl()}/api/trpc`,
     });
   }
-  const client = createWSClient({
-    url: "ws://localhost:3001",
-  });
-  return wsLink<AppRouter>({
-    client,
+
+  return splitLink({
+    condition({ type }) {
+      return type === "subscription";
+    },
+    true: wsLink({
+      client: createWSClient({
+        url: "ws://localhost:3001",
+      }),
+    }),
+    false: httpBatchLink({
+      url: `${getBaseUrl()}/api/trpc`,
+    }),
   });
 };
 
