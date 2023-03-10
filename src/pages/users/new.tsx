@@ -7,6 +7,7 @@ import { api } from "../../utils/api";
 const New: NextPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const {
     user: {
@@ -17,6 +18,7 @@ const New: NextPage = () => {
     onSuccess: () => {
       setName("");
       setEmail("");
+      setPassword("");
     },
   });
   if (isLoading) {
@@ -29,7 +31,7 @@ const New: NextPage = () => {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          mutate({ name, email });
+          mutate({ name, email, password });
         }}
       >
         <div className="pb-4">
@@ -49,6 +51,17 @@ const New: NextPage = () => {
             value={email}
             onChange={({ currentTarget: { value } }) => {
               setEmail(value);
+            }}
+          />
+        </div>
+        <div className="pb-4">
+          <label className="block">Password</label>
+          <input
+            type="password"
+            className="border"
+            value={password}
+            onChange={({ currentTarget: { value } }) => {
+              setPassword(value);
             }}
           />
         </div>

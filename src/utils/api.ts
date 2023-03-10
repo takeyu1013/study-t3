@@ -31,7 +31,6 @@ const getEndingLink = () => {
       url: `${getBaseUrl()}/api/trpc`,
     });
   }
-
   return splitLink({
     condition({ type }) {
       return type === "subscription";
@@ -39,6 +38,7 @@ const getEndingLink = () => {
     true: wsLink({
       client: createWSClient({
         url: "ws://localhost:3001",
+        retryDelayMs: () => 30_000,
       }),
     }),
     false: httpBatchLink({

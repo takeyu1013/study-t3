@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { hash } from "bcrypt";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -38,7 +39,9 @@ export const userRouter = createTRPCRouter({
     }
   ),
   createUser: publicProcedure
-    .input(z.object({ name: z.string(), email: z.string() }))
+    .input(
+      z.object({ name: z.string(), email: z.string(), password: z.string() })
+    )
     .mutation(
       async ({
         ctx: {
@@ -46,9 +49,11 @@ export const userRouter = createTRPCRouter({
             user: { create },
           },
         },
-        input: { name, email },
+        input: { name, email, password },
       }) => {
-        return await create({ data: { name, email } });
+        return await create({
+          data: { name, email, passwordDigest: await hash(password, 10) },
+        });
       }
     ),
   deleteUser: publicProcedure.input(z.object({ id: z.string() })).mutation(
