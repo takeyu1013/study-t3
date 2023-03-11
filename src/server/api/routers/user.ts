@@ -63,7 +63,12 @@ export const userRouter = createTRPCRouter({
           return;
         }
         return await create({
-          data: { name, email, passwordDigest: await hash(password, 10) },
+          data: {
+            name,
+            email,
+            passwordDigest: await hash(password, 10),
+            image: `https://secure.gravatar.com/avatar/#${email}`,
+          },
         });
       }
     ),

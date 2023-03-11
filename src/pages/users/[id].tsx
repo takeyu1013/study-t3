@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import type { FC } from "react";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import type { FallbackProps } from "react-error-boundary";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -17,7 +18,7 @@ const User = () => {
     query: { id },
   } = useRouter();
   const userId = typeof id === "string" ? id : "";
-  const [{ name, email }] = useSuspenseQuery(
+  const [{ name, email, image }] = useSuspenseQuery(
     { userId },
     {
       onError: ({ message }) => {
@@ -30,6 +31,7 @@ const User = () => {
     <div>
       <div>{name}</div>
       <div>{email}</div>
+      {image && <Image alt="avatar" src={image} width={100} height={100} />}
     </div>
   );
 };

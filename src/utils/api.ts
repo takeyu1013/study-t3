@@ -26,6 +26,12 @@ const getBaseUrl = () => {
 };
 
 const getEndingLink = () => {
+  const url = process.env.WEBSOCKET_URL;
+  if (!url) {
+    return httpBatchLink({
+      url: `${getBaseUrl()}/api/trpc`,
+    });
+  }
   if (typeof window === "undefined") {
     return httpBatchLink({
       url: `${getBaseUrl()}/api/trpc`,
@@ -37,7 +43,7 @@ const getEndingLink = () => {
     },
     true: wsLink({
       client: createWSClient({
-        url: "ws://localhost:3001",
+        url,
         retryDelayMs: () => 30_000,
       }),
     }),

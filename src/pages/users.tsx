@@ -33,6 +33,7 @@ const UserIndexPage: NextPage = () => {
         <table>
           <thead>
             <tr>
+              <th className="pb-1">ID</th>
               <th className="pb-1">Name</th>
               <th className="pb-1">Email</th>
               <th className="pb-1" colSpan={3} />
@@ -42,6 +43,9 @@ const UserIndexPage: NextPage = () => {
             {users.map(({ id, name, email }) => {
               return (
                 <tr key={id}>
+                  <td className="py-1 pr-2">
+                    <Link href={`/users/${id}`}>{id}</Link>
+                  </td>
                   <td className="py-1 pr-2">{name}</td>
                   <td className="py-1 pr-2">{email}</td>
                   <td className="py-1 pr-2">
