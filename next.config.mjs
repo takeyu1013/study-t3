@@ -21,7 +21,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["secure.gravatar.com"],
+    domains: ["secure.gravatar.com", "lh3.googleusercontent.com"],
   },
 };
 export default config;

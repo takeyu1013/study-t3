@@ -3,7 +3,6 @@ import "../styles/globals.css";
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { getSession, SessionProvider } from "next-auth/react";
-import { Suspense } from "react";
 
 import Layout from "../components/layout";
 import { api } from "../utils/api";

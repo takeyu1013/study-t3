@@ -18,7 +18,6 @@ const Anchor: FC<{ children: ReactNode; href: string }> = ({
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
-  console.log(session);
 
   return (
     <>
@@ -55,7 +54,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
               ) : (
                 <button
                   onClick={() => {
-                    void signIn().catch(console.log);
+                    void signIn();
                   }}
                   className="text-sm text-[#9d9d9d] hover:text-white"
                 >
