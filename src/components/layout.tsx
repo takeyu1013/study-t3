@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
 import type { FC, ReactNode } from "react";
 
 import Title from "./title";
@@ -16,6 +17,9 @@ const Anchor: FC<{ children: ReactNode; href: string }> = ({
 );
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
+  const { data: session } = useSession();
+  console.log(session);
+
   return (
     <>
       <Title />
@@ -28,7 +32,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             sample app
           </Link>
           <ul className="flex gap-[30px] py-[15px]">
-            {["Home", "Help", "Log in"].map((text, index) => (
+            {["Home", "Help"].map((text, index) => (
               <li key={index} className="h-5">
                 <Link
                   href="#"
@@ -38,6 +42,27 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                 </Link>
               </li>
             ))}
+            <li className="h-5">
+              {session ? (
+                <button
+                  onClick={() => {
+                    void signOut();
+                  }}
+                  className="text-sm text-[#9d9d9d] hover:text-white"
+                >
+                  Log out
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    void signIn().catch(console.log);
+                  }}
+                  className="text-sm text-[#9d9d9d] hover:text-white"
+                >
+                  Log in
+                </button>
+              )}
+            </li>
           </ul>
         </nav>
       </header>

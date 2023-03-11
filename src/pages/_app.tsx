@@ -15,9 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <Layout>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Component {...pageProps} />
-        </Suspense>
+        <Component {...pageProps} />
       </Layout>
     </SessionProvider>
   );

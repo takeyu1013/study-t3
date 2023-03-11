@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+import type { FC } from "react";
+import { Suspense } from "react";
 
 import { api } from "../utils/api";
 
-const UserIndexPage: NextPage = () => {
+const Users: FC = () => {
   const {
     user: {
       getUsers: { useSuspenseQuery },
@@ -74,4 +76,12 @@ const UserIndexPage: NextPage = () => {
   );
 };
 
-export default UserIndexPage;
+const UsersPage: NextPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Users />
+    </Suspense>
+  );
+};
+
+export default UsersPage;
