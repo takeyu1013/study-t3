@@ -20,7 +20,7 @@ const Home: NextPage = () => {
           sample application.
         </h2>
         <Link
-          href="#"
+          href="/signup"
           className="inline-block rounded-md border border-[#2e6da4] bg-[#337ab7] px-4 py-[10px] text-lg leading-6 text-white hover:border-[#204d74] hover:bg-[#286090]"
         >
           Sign up now!
