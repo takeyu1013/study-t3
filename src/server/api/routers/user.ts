@@ -40,7 +40,15 @@ export const userRouter = createTRPCRouter({
   ),
   createUser: publicProcedure
     .input(
-      z.object({ name: z.string(), email: z.string(), password: z.string() })
+      z.object({
+        name: z.string(),
+        email: z.string(),
+        password: z
+          .string()
+          .min(8)
+          .regex(/^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}$/i),
+        passwordConfirmation: z.string().min(1),
+      })
     )
     .mutation(
       async ({
@@ -49,8 +57,11 @@ export const userRouter = createTRPCRouter({
             user: { create },
           },
         },
-        input: { name, email, password },
+        input: { name, email, password, passwordConfirmation },
       }) => {
+        if (password !== passwordConfirmation) {
+          return;
+        }
         return await create({
           data: { name, email, passwordDigest: await hash(password, 10) },
         });

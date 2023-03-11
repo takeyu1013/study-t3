@@ -8,6 +8,7 @@ const New: NextPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   const {
     user: {
@@ -19,6 +20,7 @@ const New: NextPage = () => {
       setName("");
       setEmail("");
       setPassword("");
+      setPasswordConfirmation("");
     },
   });
   if (isLoading) {
@@ -31,7 +33,7 @@ const New: NextPage = () => {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          mutate({ name, email, password });
+          mutate({ name, email, password, passwordConfirmation });
         }}
       >
         <div className="pb-4">
@@ -62,6 +64,17 @@ const New: NextPage = () => {
             value={password}
             onChange={({ currentTarget: { value } }) => {
               setPassword(value);
+            }}
+          />
+        </div>
+        <div className="pb-4">
+          <label className="block">Password Confirmation</label>
+          <input
+            type="password"
+            className="border"
+            value={passwordConfirmation}
+            onChange={({ currentTarget: { value } }) => {
+              setPasswordConfirmation(value);
             }}
           />
         </div>
