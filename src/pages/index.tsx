@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
-    <div className="pt-[9px]">
+    <div>
       <div className="rounded-md bg-[#eeeeee] py-12 px-16 text-center">
         <h1 className="pt-5 text-[63px] font-medium leading-none tracking-[-2px] text-[#333333]">
           Welcome to the Sample App
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
           Sign up now!
         </Link>
       </div>
-      <div className="pt-[30px] pb-[45px]">
+      <div className="pt-[30px]">
         <a href="https://rubyonrails.org/">
           <Image
             alt="Rails logo"

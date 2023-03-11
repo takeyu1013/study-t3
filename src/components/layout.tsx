@@ -23,7 +23,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         <nav className="flex max-w-[1140px] grow items-center justify-between">
           <Link
             href="/"
-            className="text-[1.7em] font-bold uppercase tracking-[-1px] text-white"
+            className="text-[23.8px] font-bold uppercase tracking-[-1px] text-white"
           >
             sample app
           </Link>
@@ -43,32 +43,34 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       </header>
       <div className="flex justify-center px-[130px]">
         <div className="max-w-[1140px] grow">
-          <main>{children}</main>
-          <footer className="flex justify-between border-t border-[#eaeaea] pt-[5px]">
-            <small className="text-[#777777]">
-              The{" "}
-              <Anchor href="https://railstutorial.jp/">
-                Ruby on Rails Tutorial
-              </Anchor>{" "}
-              by{" "}
-              <Anchor href="https://www.michaelhartl.com/">
-                Michael Hartl
-              </Anchor>
-            </small>
-            <nav>
-              <ul className="flex gap-[15px]">
-                {["About", "Contact", "News"].map((text, index) => (
-                  <li key={index} className="h-5">
-                    <Link
-                      href="#"
-                      className="text-sm text-[#555555] hover:text-[#222222] hover:underline"
-                    >
-                      {text}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          <main className="pt-[9px]">{children}</main>
+          <footer className="pt-[45px]">
+            <div className="flex justify-between border-t border-[#eaeaea] pt-[5px]">
+              <small className="text-[#777777]">
+                The{" "}
+                <Anchor href="https://railstutorial.jp/">
+                  Ruby on Rails Tutorial
+                </Anchor>{" "}
+                by{" "}
+                <Anchor href="https://www.michaelhartl.com/">
+                  Michael Hartl
+                </Anchor>
+              </small>
+              <nav>
+                <ul className="flex gap-[15px]">
+                  {["About", "Contact", "News"].map((text, index) => (
+                    <li key={index} className="h-5">
+                      <Link
+                        href="#"
+                        className="text-sm text-[#555555] hover:text-[#222222] hover:underline"
+                      >
+                        {text}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
           </footer>
         </div>
       </div>

@@ -18,7 +18,7 @@ const User = () => {
     query: { id },
   } = useRouter();
   const userId = typeof id === "string" ? id : "";
-  const [{ name, email, image }] = useSuspenseQuery(
+  const [{ name, image }] = useSuspenseQuery(
     { userId },
     {
       onError: ({ message }) => {
@@ -28,10 +28,9 @@ const User = () => {
   );
 
   return (
-    <div>
-      <div>{name}</div>
-      <div>{email}</div>
-      {image && <Image alt="avatar" src={image} width={100} height={100} />}
+    <div className="flex gap-[10px] pt-[30px] pb-[10px]">
+      {image && <Image alt="avatar" src={image} width={80} height={80} />}
+      <h1 className="text-[19.6px] tracking-[-1px] text-[#333333]">{name}</h1>
     </div>
   );
 };
