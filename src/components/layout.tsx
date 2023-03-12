@@ -52,14 +52,12 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                   Log out
                 </button>
               ) : (
-                <button
-                  onClick={() => {
-                    void signIn();
-                  }}
+                <Link
+                  href="/login"
                   className="text-sm text-[#9d9d9d] hover:text-white"
                 >
                   Log in
-                </button>
+                </Link>
               )}
             </li>
           </ul>
