@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import type { FC, ReactNode } from "react";
 
 import Title from "./title";
@@ -44,8 +44,8 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             <li className="h-5">
               {session ? (
                 <button
-                  onClick={() => {
-                    void signOut();
+                  onClick={async () => {
+                    await signOut();
                   }}
                   className="text-sm text-[#9d9d9d] hover:text-white"
                 >

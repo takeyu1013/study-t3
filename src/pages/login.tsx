@@ -30,8 +30,8 @@ const Login: NextPage = () => {
       <div className="flex justify-center">
         <div className="max-w-[555px] grow">
           <form
-            onSubmit={handleSubmit(({ email, password }) => {
-              void signIn("credentials", {
+            onSubmit={handleSubmit(async ({ email, password }) => {
+              await signIn("credentials", {
                 email,
                 password,
               });
