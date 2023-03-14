@@ -23,7 +23,7 @@ const Login: NextPage = () => {
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { push } = useRouter();
 
   useEffect(() => {
@@ -37,6 +37,10 @@ const Login: NextPage = () => {
       await push(`/users/${id}`);
     })();
   }, [session, push]);
+
+  if (status !== "unauthenticated") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
