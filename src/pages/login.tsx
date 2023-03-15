@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { getSession, signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -23,24 +22,7 @@ const Login: NextPage = () => {
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { data: session, status } = useSession();
   const { push } = useRouter();
-
-  useEffect(() => {
-    void (async () => {
-      if (!session) {
-        return;
-      }
-      const {
-        user: { id },
-      } = session;
-      await push(`/users/${id}`);
-    })();
-  }, [session, push]);
-
-  if (status !== "unauthenticated") {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div>
@@ -54,7 +36,16 @@ const Login: NextPage = () => {
               await signIn("credentials", {
                 email,
                 password,
+                redirect: false,
               });
+              const session = await getSession();
+              if (!session) {
+                return;
+              }
+              const {
+                user: { id },
+              } = session;
+              await push(`/users/${id}`);
             })}
           >
             <div>
