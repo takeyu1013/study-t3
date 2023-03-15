@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import type { FC, ReactNode } from "react";
+import { useState } from "react";
 
 import Title from "./title";
 
@@ -18,6 +19,7 @@ const Anchor: FC<{ children: ReactNode; href: string }> = ({
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <>
@@ -43,14 +45,61 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             ))}
             <li className="h-5">
               {session ? (
-                <button
-                  onClick={async () => {
-                    await signOut();
-                  }}
-                  className="text-sm text-[#9d9d9d] hover:text-white"
-                >
-                  Log out
-                </button>
+                <div className="relative inline-block text-left">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsExpanded((isExpanded) => !isExpanded);
+                    }}
+                    className="text-sm text-[#9d9d9d] hover:text-white"
+                    id="menu-button"
+                    aria-expanded={isExpanded}
+                    aria-haspopup
+                  >
+                    Account
+                  </button>
+                  <div
+                    className={`absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+                      isExpanded ? "" : "hidden"
+                    }`}
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="menu-button"
+                    tabIndex={-1}
+                  >
+                    <div className="py-1" role="none">
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-0"
+                      >
+                        Profile
+                      </a>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-gray-700"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-1"
+                      >
+                        Settings
+                      </a>
+                      <button
+                        className="block w-full px-4 py-2 text-left text-sm text-gray-700"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-3"
+                        onClick={async () => {
+                          await signOut();
+                        }}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <Link
                   href="/login"
