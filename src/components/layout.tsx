@@ -1,6 +1,8 @@
+import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import type { FC, ReactNode } from "react";
+import { Fragment } from "react";
 import { useState } from "react";
 
 import Title from "./title";
@@ -19,7 +21,6 @@ const Anchor: FC<{ children: ReactNode; href: string }> = ({
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session } = useSession();
-  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <>
@@ -33,10 +34,16 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             sample app
           </Link>
           <ul className="flex gap-[30px] py-[15px]">
-            {["Home", "Help"].map((text, index) => (
+            {(
+              [
+                ["Home", "/"],
+                ["Help", "#"],
+                ["User", "/users"],
+              ] as const
+            ).map(([text, path], index) => (
               <li key={index} className="h-5">
                 <Link
-                  href="#"
+                  href={path}
                   className="text-sm text-[#9d9d9d] hover:text-white"
                 >
                   {text}
@@ -45,61 +52,70 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             ))}
             <li className="h-5">
               {session ? (
-                <div className="relative inline-block text-left">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsExpanded((isExpanded) => !isExpanded);
-                    }}
-                    className="text-sm text-[#9d9d9d] hover:text-white"
-                    id="menu-button"
-                    aria-expanded={isExpanded}
-                    aria-haspopup
-                  >
-                    Account
-                  </button>
-                  <div
-                    className={`absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
-                      isExpanded ? "" : "hidden"
-                    }`}
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="menu-button"
-                    tabIndex={-1}
-                  >
-                    <div className="py-1" role="none">
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700"
-                        role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-0"
+                <Menu as="div" className="relative inline-block text-left">
+                  <div className="group">
+                    <Menu.Button className="inline-flex text-sm text-[#9d9d9d] group-hover:text-white">
+                      Account
+                      <svg
+                        className="-mr-1 h-5 w-5 text-[#9d9d9d] group-hover:text-white"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
                       >
-                        Profile
-                      </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700"
-                        role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-1"
-                      >
-                        Settings
-                      </a>
-                      <button
-                        className="block w-full px-4 py-2 text-left text-sm text-gray-700"
-                        role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-3"
-                        onClick={async () => {
-                          await signOut();
-                        }}
-                      >
-                        Sign out
-                      </button>
-                    </div>
+                        <path
+                          fill-rule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </Menu.Button>
                   </div>
-                </div>
+
+                  <div className="pt-[12px]">
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 w-40 origin-top-right divide-y divide-[#e5e5e5] rounded-b-sm bg-white py-[5px] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="pb-[9px]">
+                          <Menu.Item>
+                            <a
+                              href={`/users/${session?.user.id}`}
+                              className="block px-5 py-[3px] text-sm text-[#333333] hover:bg-[#f5f5f5]"
+                            >
+                              Profile
+                            </a>
+                          </Menu.Item>
+                          <Menu.Item>
+                            <a
+                              href="#"
+                              className="block px-5 py-[3px] text-sm text-[#333333] hover:bg-[#f5f5f5]"
+                            >
+                              Settings
+                            </a>
+                          </Menu.Item>
+                        </div>
+                        <div className="pt-[9px]">
+                          <Menu.Item>
+                            <button
+                              className="block w-full py-[3px] px-5 pt-[3px] text-left text-sm text-[#333333] hover:bg-[#f5f5f5]"
+                              onClick={async () => {
+                                await signOut();
+                              }}
+                            >
+                              Sign out
+                            </button>
+                          </Menu.Item>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </div>
+                </Menu>
               ) : (
                 <Link
                   href="/login"
