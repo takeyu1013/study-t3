@@ -11,6 +11,7 @@
     "wss": "PORT=3001 NODE_ENV=development tsx watch src/server/wsServer.ts --tsconfig tsconfig.server.json"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.13",
     "@hookform/resolvers": "^2.9.11",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.11.0",
