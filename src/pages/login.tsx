@@ -83,7 +83,13 @@ const Login: NextPage = () => {
             </button>
           </form>
           <p>
-            New user? <Link href="/signup">Sign up now!</Link>
+            New user?{" "}
+            <Link
+              className="text-[#337ab7] hover:text-[#23527c] hover:underline"
+              href="/signup"
+            >
+              Sign up now!
+            </Link>
           </p>
         </div>
       </div>

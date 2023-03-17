@@ -107,7 +107,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                                 await signOut();
                               }}
                             >
-                              Sign out
+                              Log out
                             </button>
                           </Menu.Item>
                         </div>
