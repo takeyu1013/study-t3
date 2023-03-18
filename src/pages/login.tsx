@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
@@ -109,6 +109,10 @@ const Login: NextPage = () => {
   );
 };
 
-Login.getInitialProps = () => ({ props: {} });
+export const getServerSideProps = () => {
+  return {
+    props: {},
+  };
+};
 
 export default Login;
