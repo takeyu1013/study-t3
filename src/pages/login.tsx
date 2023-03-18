@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
@@ -16,6 +16,7 @@ const schema = z.object({
 });
 
 const Login: NextPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,7 +25,6 @@ const Login: NextPage = () => {
     resolver: zodResolver(schema),
   });
   const { push } = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -109,7 +109,8 @@ const Login: NextPage = () => {
   );
 };
 
-export const getServerSideProps = () => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {},
   };
