@@ -8,16 +8,12 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { api } from "../../utils/api";
 
-const User = () => {
+const UserData: FC<{ userId: string }> = ({ userId }) => {
   const {
     user: {
       getOneUser: { useSuspenseQuery },
     },
   } = api;
-  const {
-    query: { id },
-  } = useRouter();
-  const userId = typeof id === "string" ? id : "";
   const [{ name, image }] = useSuspenseQuery(
     { userId },
     {
@@ -33,6 +29,19 @@ const User = () => {
       <h1 className="text-[19.6px] tracking-[-1px] text-[#333333]">{name}</h1>
     </div>
   );
+};
+
+const User = () => {
+  const {
+    query: { id },
+    isReady,
+  } = useRouter();
+
+  if (typeof id !== "string" || !isReady) {
+    return <p>Loading...</p>;
+  }
+
+  return <UserData userId={id} />;
 };
 
 const Fallback: FC<FallbackProps> = ({ error: { message } }) => {
