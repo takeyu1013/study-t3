@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import { z } from "zod";
 
 const schema = z.object({
   email: z.string().email(),
