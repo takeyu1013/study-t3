@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
