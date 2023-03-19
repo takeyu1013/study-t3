@@ -36,7 +36,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             {(
               [
                 ["Home", "/"],
-                ["Help", "#"],
+                ["Help", "/help"],
                 ["Users", "/users"],
               ] as const
             ).map(([text, path], index) => (
