@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
 import { Suspense } from "react";
@@ -9,78 +10,47 @@ const Users: FC = () => {
   const {
     user: {
       getUsers: { useSuspenseQuery },
-      deleteUser: { useMutation },
     },
   } = api;
   const [users] = useSuspenseQuery();
-  const {
-    user: {
-      getUsers: { invalidate },
-    },
-  } = api.useContext();
-  const { mutate, isLoading, error } = useMutation({
-    onSuccess: async () => {
-      await invalidate();
-    },
-  });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
-    <div className="p-8">
-      <h1 className="pb-4 text-4xl font-bold">Users</h1>
-      <div className="pb-4">
-        <table>
-          <thead>
-            <tr>
-              <th className="pb-1">ID</th>
-              <th className="pb-1">Name</th>
-              <th className="pb-1">Email</th>
-              <th className="pb-1" colSpan={3} />
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(({ id, name, email }) => {
-              return (
-                <tr key={id}>
-                  <td className="py-1 pr-2">
-                    <Link href={`/users/${id}`}>{id}</Link>
-                  </td>
-                  <td className="py-1 pr-2">{name}</td>
-                  <td className="py-1 pr-2">{email}</td>
-                  <td className="py-1 pr-2">
-                    <Link href="#">Edit</Link>
-                  </td>
-                  <td className="py-1 pr-2">
-                    <button
-                      onClick={() => {
-                        mutate({ id });
-                      }}
-                    >
-                      Destroy
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <Link href="/users/new" className="underline">
-        New User
-      </Link>
-      <div>{error && error.message}</div>
-    </div>
+    <ul className="pl-10">
+      {users.map(({ id, name, image }) => {
+        return (
+          <li key={id} className="flex gap-[10px] border-b py-[10px]">
+            <Image
+              alt="avater"
+              src={
+                image ||
+                "https://secure.gravatar.com/avatar/3671055c9063cfc5f08b7741c8de4802?s=50"
+              }
+              width={50}
+              height={50}
+            />
+            <Link
+              href={`/users/${id}`}
+              className="text-sm text-[#337ab7] hover:text-[#23527c] hover:underline"
+            >
+              {name}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 
 const UsersPage: NextPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Users />
-    </Suspense>
+    <>
+      <h1 className="pt-5 pb-[30px] text-center text-[42px] leading-none tracking-[-2px]">
+        All users
+      </h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Users />
+      </Suspense>
+    </>
   );
 };
 
