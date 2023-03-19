@@ -37,7 +37,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
               [
                 ["Home", "/"],
                 ["Help", "#"],
-                ["User", "/users"],
+                ["Users", "/users"],
               ] as const
             ).map(([text, path], index) => (
               <li key={index} className="h-5">
@@ -92,7 +92,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                           </Menu.Item>
                           <Menu.Item>
                             <a
-                              href="#"
+                              href={`/users/${session?.user.id}/edit`}
                               className="block px-5 py-[3px] text-sm text-[#333333] hover:bg-[#f5f5f5]"
                             >
                               Settings
