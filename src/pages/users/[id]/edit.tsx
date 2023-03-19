@@ -32,9 +32,11 @@ const Profile: FC<{ session: Session }> = ({
   const {
     user: {
       getOneUser: { useSuspenseQuery },
+      editUser: { useMutation },
     },
   } = api;
   const [{ name, email, image }] = useSuspenseQuery({ userId });
+  const { mutate } = useMutation();
   const { register, handleSubmit } = useForm<z.infer<typeof schema>>({
     defaultValues: {
       name: name ?? "",
@@ -69,8 +71,14 @@ const Profile: FC<{ session: Session }> = ({
       <div className="max-w-[555px] grow">
         <form
           className="pb-[15px]"
-          onSubmit={handleSubmit((form) => {
-            console.log(form);
+          onSubmit={handleSubmit(({ name, email, password, confirmation }) => {
+            mutate({
+              id: userId,
+              name,
+              email,
+              password,
+              passwordConfirmation: confirmation,
+            });
           })}
         >
           <Label>Name</Label>

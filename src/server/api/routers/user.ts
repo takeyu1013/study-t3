@@ -84,4 +84,39 @@ export const userRouter = createTRPCRouter({
       return await remove({ where: { id } });
     }
   ),
+  editUser: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        email: z.string().email(),
+        password: z
+          .string()
+          .min(8)
+          .regex(/^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}$/i),
+        passwordConfirmation: z.string().min(1),
+      })
+    )
+    .mutation(
+      async ({
+        ctx: {
+          prisma: {
+            user: { update },
+          },
+        },
+        input: { id, name, email, password, passwordConfirmation },
+      }) => {
+        if (password !== passwordConfirmation) {
+          return;
+        }
+        return await update({
+          where: { id },
+          data: {
+            name,
+            email,
+            passwordDigest: await hash(password, 10),
+          },
+        });
+      }
+    ),
 });
