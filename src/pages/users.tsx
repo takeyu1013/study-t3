@@ -47,6 +47,36 @@ const UsersPage: NextPage = () => {
       <h1 className="pt-5 pb-[30px] text-center text-[42px] leading-none tracking-[-2px]">
         All users
       </h1>
+      <nav className="inline-flex -space-x-px py-10" aria-label="Pagination">
+        <Link
+          href="#"
+          className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+        >
+          ← Previous
+        </Link>
+        {[...Array(10)].map((_, index) => {
+          const page = index + 1;
+          return (
+            <Link
+              key={index}
+              href={{ pathname: "/users", query: { page } }}
+              aria-current="page"
+              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            >
+              {page}
+            </Link>
+          );
+        })}
+        {/* <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+          ...
+        </span> */}
+        <Link
+          href="#"
+          className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+        >
+          Next →
+        </Link>
+      </nav>
       <Suspense fallback={<div>Loading...</div>}>
         <Users />
       </Suspense>
