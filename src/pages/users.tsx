@@ -54,7 +54,7 @@ const UsersPage: NextPage = () => {
         >
           ← Previous
         </Link>
-        {[...Array(10)].map((_, index) => {
+        {[...Array<undefined>(10)].map((_, index) => {
           const page = index + 1;
           return (
             <Link
