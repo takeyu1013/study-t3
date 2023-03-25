@@ -11,13 +11,22 @@ const Pagination: FC<{ total: number; current: number }> = ({
   total,
   current,
 }) => {
-  const className =
-    "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0";
+  const className = (isActive: boolean) => {
+    const className =
+      "relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:z-20";
+    return isActive
+      ? `${className} bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`
+      : `${className} text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0`;
+  };
 
   return (
     <nav className="inline-flex -space-x-px py-10" aria-label="Pagination">
       <Link
-        href="#"
+        href={
+          1 < current
+            ? { pathname: "/users", query: { page: current - 1 } }
+            : { pathname: "/users", query: { page: 1 } }
+        }
         className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
       >
         ← Previous
@@ -30,11 +39,7 @@ const Pagination: FC<{ total: number; current: number }> = ({
               key={index}
               href={{ pathname: "/users", query: { page } }}
               aria-current="page"
-              className={
-                page === current
-                  ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  : className
-              }
+              className={className(page === current)}
             >
               {page}
             </Link>
@@ -49,11 +54,7 @@ const Pagination: FC<{ total: number; current: number }> = ({
                 key={index}
                 href={{ pathname: "/users", query: { page } }}
                 aria-current="page"
-                className={
-                  page === current
-                    ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    : className
-                }
+                className={className(page === current)}
               >
                 {page}
               </Link>
@@ -65,18 +66,18 @@ const Pagination: FC<{ total: number; current: number }> = ({
           <Link
             href={{ pathname: "/users", query: { page: total } }}
             aria-current="page"
-            className={
-              total === current
-                ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                : className
-            }
+            className={className(total === current)}
           >
             {total}
           </Link>
         </>
       )}
       <Link
-        href="#"
+        href={
+          current < total
+            ? { pathname: "/users", query: { page: current + 1 } }
+            : { pathname: "/users", query: { page: total } }
+        }
         className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
       >
         Next →
