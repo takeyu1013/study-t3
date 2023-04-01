@@ -119,4 +119,39 @@ export const userRouter = createTRPCRouter({
         });
       }
     ),
+  infiniteUsers: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(
+      async ({
+        input: { limit, cursor },
+        ctx: {
+          prisma: {
+            user: { findMany },
+          },
+        },
+      }) => {
+        const take = (limit ?? 50) + 1;
+        if (!cursor) {
+          const items = await findMany({
+            take,
+            orderBy: { id: "asc" },
+          });
+          const nextCursor = items.at(-1)?.id;
+          return { items, nextCursor };
+        }
+        const items = await findMany({
+          take,
+          skip: 1,
+          cursor: { id: cursor },
+          orderBy: { id: "asc" },
+        });
+        const nextCursor = items.at(-1)?.id;
+        return { items, nextCursor };
+      }
+    ),
 });
