@@ -136,22 +136,18 @@ export const userRouter = createTRPCRouter({
         },
       }) => {
         const take = (limit ?? 50) + 1;
-        if (!cursor) {
-          const items = await findMany({
-            take,
-            orderBy: { id: "asc" },
-          });
-          const nextCursor = items.at(-1)?.id;
-          return { items, nextCursor };
-        }
-        const items = await findMany({
-          take,
-          skip: 1,
-          cursor: { id: cursor },
-          orderBy: { id: "asc" },
-        });
-        const nextCursor = items.at(-1)?.id;
-        return { items, nextCursor };
+        const items = cursor
+          ? await findMany({
+              take,
+              skip: 1,
+              cursor: { id: cursor },
+              orderBy: { id: "asc" },
+            })
+          : await findMany({
+              take,
+              orderBy: { id: "asc" },
+            });
+        return { items, nextCursor: items.at(-1)?.id };
       }
     ),
 });
