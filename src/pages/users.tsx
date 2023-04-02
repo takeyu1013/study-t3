@@ -11,22 +11,18 @@ const Pagination: FC<{ total: number; current: number }> = ({
   total,
   current,
 }) => {
-  const className = "flex items-center px-3 py-[6px] text-sm";
-  const selectable = (isActive: boolean) => {
-    return isActive
-      ? `${className} bg-[#337ab7] text-white`
-      : `${className} text-[#337ab7] border hover:bg-gray-50 `;
-  };
+  const base = "flex items-center px-3 py-[6px] text-sm";
+  const className = `${base} border text-[#337ab7] hover:bg-gray-50`;
 
   return (
-    <nav className="inline-flex -space-x-px py-10" aria-label="Pagination">
+    <nav className="inline-flex -space-x-px py-10">
       <Link
         href={
           1 < current
             ? { pathname: "/users", query: { page: current - 1 } }
             : { pathname: "/users", query: { page: 1 } }
         }
-        className={`${className} rounded-l border text-[#337ab7] hover:bg-gray-50`}
+        className={`${className} rounded-l`}
       >
         ← Previous
       </Link>
@@ -36,8 +32,9 @@ const Pagination: FC<{ total: number; current: number }> = ({
           <Link
             key={index}
             href={{ pathname: "/users", query: { page } }}
-            aria-current="page"
-            className={selectable(page === current)}
+            className={
+              page === current ? `${base} bg-[#337ab7] text-white` : className
+            }
           >
             {page}
           </Link>
@@ -49,7 +46,7 @@ const Pagination: FC<{ total: number; current: number }> = ({
             ? { pathname: "/users", query: { page: current + 1 } }
             : { pathname: "/users", query: { page: total } }
         }
-        className={`${className} rounded-r-md border text-[#337ab7] hover:bg-gray-50`}
+        className={`${className} rounded-r`}
       >
         Next →
       </Link>
