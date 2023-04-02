@@ -131,7 +131,7 @@ export const userRouter = createTRPCRouter({
         input: { limit, cursor },
         ctx: {
           prisma: {
-            user: { findMany },
+            user: { findMany, count },
           },
         },
       }) => {
@@ -147,7 +147,8 @@ export const userRouter = createTRPCRouter({
               take,
               orderBy: { id: "asc" },
             });
-        return { items, nextCursor: items.at(-1)?.id };
+        const total = await count();
+        return { items, nextCursor: items.at(-1)?.id, total };
       }
     ),
 });

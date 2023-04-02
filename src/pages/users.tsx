@@ -57,38 +57,52 @@ const Pagination: FC<{ total: number; current: number }> = ({
   );
 };
 
-const Users: FC = () => {
+const Users: FC<{ current?: number }> = ({ current = 1 }) => {
   const {
     user: {
-      getUsers: { useSuspenseQuery },
+      infiniteUsers: { useSuspenseInfiniteQuery },
     },
   } = api;
-  const [users] = useSuspenseQuery();
+  const limit = 10;
+  const [{ pages }] = useSuspenseInfiniteQuery(
+    { limit },
+    { getNextPageParam: ({ nextCursor }) => nextCursor }
+  );
+  const page = pages[current - 1];
+  if (!page) {
+    return <p>Not found</p>;
+  }
+  const { items: users, total } = page;
+  const count = ((total / limit) | 0) + 1;
 
   return (
-    <ul className="pl-10">
-      {users.map(({ id, name, image }) => {
-        return (
-          <li key={id} className="flex gap-[10px] border-b py-[10px]">
-            <Image
-              alt="avater"
-              src={
-                image ||
-                "https://secure.gravatar.com/avatar/3671055c9063cfc5f08b7741c8de4802?s=50"
-              }
-              width={50}
-              height={50}
-            />
-            <Link
-              href={`/users/${id}`}
-              className="text-sm text-[#337ab7] hover:text-[#23527c] hover:underline"
-            >
-              {name}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <Pagination total={count} current={current} />
+      <ul className="pl-10">
+        {users.map(({ id, name, image }) => {
+          return (
+            <li key={id} className="flex gap-[10px] border-b py-[10px]">
+              <Image
+                alt="avater"
+                src={
+                  image ||
+                  "https://secure.gravatar.com/avatar/3671055c9063cfc5f08b7741c8de4802?s=50"
+                }
+                width={50}
+                height={50}
+              />
+              <Link
+                href={`/users/${id}`}
+                className="text-sm text-[#337ab7] hover:text-[#23527c] hover:underline"
+              >
+                {name}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <Pagination total={count} current={current} />
+    </>
   );
 };
 
@@ -96,18 +110,17 @@ const UsersPage: NextPage = () => {
   const {
     query: { page },
   } = useRouter();
-  const current = Number.isNaN(Number(page)) ? 1 : Number(page);
+  const number = Number(page);
+  const current = Number.isNaN(number) ? 1 : number;
 
   return (
     <>
       <h1 className="pt-5 pb-[30px] text-center text-[42px] leading-none tracking-[-2px]">
         All users
       </h1>
-      <Pagination total={10} current={current} />
       <Suspense fallback={<div>Loading...</div>}>
-        <Users />
+        <Users current={current} />
       </Suspense>
-      <Pagination total={10} current={current} />
     </>
   );
 };
