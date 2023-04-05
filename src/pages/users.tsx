@@ -78,7 +78,10 @@ const Users: FC<{ current?: number }> = ({ current = 1 }) => {
       <ul className="pl-10">
         {users.map(({ id, name, image }) => {
           return (
-            <li key={id} className="flex gap-[10px] border-b py-[10px]">
+            <li
+              key={id}
+              className="flex items-start gap-[10px] border-b py-[10px]"
+            >
               <Image
                 alt="avater"
                 src={
@@ -94,6 +97,15 @@ const Users: FC<{ current?: number }> = ({ current = 1 }) => {
               >
                 {name}
               </Link>
+              |
+              <button
+                className="inline align-top text-sm text-[#337ab7] hover:text-[#23527c] hover:underline"
+                onClick={() => {
+                  console.log("clicked");
+                }}
+              >
+                delete
+              </button>
             </li>
           );
         })}
