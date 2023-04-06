@@ -1,4 +1,3 @@
-import { User, User } from "@prisma/client";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,44 +51,6 @@ const Pagination: FC<{ total: number; current: number }> = ({
         Next →
       </Link>
     </nav>
-  );
-};
-
-const User = ({ id, name, image }: Pick<User, "id" | "name" | "image">) => {
-  const {
-    user: {
-      deleteUser: { useMutation },
-    },
-  } = api;
-  const { mutate } = useMutation();
-
-  return (
-    <li key={id} className="flex items-start gap-[10px] border-b py-[10px]">
-      <Image
-        alt="avater"
-        src={
-          image ||
-          "https://secure.gravatar.com/avatar/3671055c9063cfc5f08b7741c8de4802?s=50"
-        }
-        width={50}
-        height={50}
-      />
-      <Link
-        href={`/users/${id}`}
-        className="text-sm text-[#337ab7] hover:text-[#23527c] hover:underline"
-      >
-        {name}
-      </Link>
-      |
-      <button
-        className="inline align-top text-sm text-[#337ab7] hover:text-[#23527c] hover:underline"
-        onClick={() => {
-          console.log("clicked");
-        }}
-      >
-        delete
-      </button>
-    </li>
   );
 };
 
