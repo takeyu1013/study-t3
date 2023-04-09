@@ -1,12 +1,27 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import Microposts from "../components/microposts";
 
+const schema = z.object({
+  content: z.string().min(1),
+});
+
 const Home: NextPage = () => {
   const { data: session } = useSession();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+
   if (!session) {
     return (
       <div>
@@ -77,14 +92,23 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section className="grow pt-[30px] pb-[10px]">
-          <form>
+          <form
+            onSubmit={handleSubmit(({ content }) => {
+              console.log(content);
+            })}
+          >
             <div className="pb-[10px]">
               <textarea
                 placeholder="Compose new micropost..."
                 className="block h-[100px] w-full border border-[#bbbbbb] p-[2px] text-sm text-inherit placeholder:text-[#757575]"
+                {...register("content")}
               />
+              {errors.content?.message && <p>{errors.content.message}</p>}
             </div>
-            <button className="w-full rounded border bg-[#337ab7] px-3 py-[6px] text-sm text-white hover:bg-[#286090]">
+            <button
+              type="submit"
+              className="w-full rounded border bg-[#337ab7] px-3 py-[6px] text-sm text-white hover:bg-[#286090]"
+            >
               Post
             </button>
             <input type="file" className="block pt-[10px] pb-[15px] text-sm" />
