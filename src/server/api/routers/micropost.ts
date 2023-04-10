@@ -42,4 +42,37 @@ export const micropostRouter = createTRPCRouter({
         });
       }
     ),
+  infiniteMicroposts: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.number().min(1).nullish(),
+      })
+    )
+    .query(
+      async ({
+        input: { limit, cursor },
+        ctx: {
+          prisma: {
+            micropost: { findMany, count },
+          },
+        },
+      }) => {
+        const take = (limit ?? 50) + 1;
+        const items = cursor
+          ? await findMany({
+              take,
+              skip: 1,
+              cursor: { id: cursor },
+              orderBy: { id: "asc" },
+            })
+          : await findMany({
+              take,
+              orderBy: { id: "asc" },
+            });
+        const total = await count();
+        return { items, nextCursor: items.at(-1)?.id, total };
+      }
+    ),
 });

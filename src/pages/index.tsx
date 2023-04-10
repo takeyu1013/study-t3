@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import Microposts from "../components/microposts";
+import { api } from "../utils/api";
 
 const schema = z.object({
   content: z.string().min(1),
@@ -17,10 +18,17 @@ const Home: NextPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
+  const {
+    micropost: {
+      createMicropost: { useMutation },
+    },
+  } = api;
+  const { mutate } = useMutation({ onSuccess: () => reset() });
 
   if (!session) {
     return (
@@ -95,6 +103,7 @@ const Home: NextPage = () => {
           <form
             onSubmit={handleSubmit(({ content }) => {
               console.log(content);
+              mutate({ userId: id, content });
             })}
           >
             <div className="pb-[10px]">
@@ -119,7 +128,11 @@ const Home: NextPage = () => {
         <h3 className="pt-5 pb-[10px] text-[24px] font-medium leading-6">
           Micropost Feed
         </h3>
-        <Microposts />
+        <Microposts
+          userId={id}
+          name={name || "Anonymous"}
+          image={image || null}
+        />
       </div>
     </div>
   );

@@ -25,9 +25,21 @@ const UserData: FC<{ userId: string }> = ({ userId }) => {
   );
 
   return (
-    <div className="flex gap-[10px] pt-[20px] pb-[10px]">
-      {image && <Image alt="avatar" src={image} width={80} height={80} />}
-      <h1 className="text-[19.6px] tracking-[-1px] text-[#333333]">{name}</h1>
+    <div className="flex gap-[30px]">
+      <aside className="max-w-[360px] grow">
+        <div className="flex gap-[10px] pt-[20px] pb-[10px]">
+          {image && <Image alt="avatar" src={image} width={80} height={80} />}
+          <h1 className="text-[19.6px] tracking-[-1px] text-[#333333]">
+            {name}
+          </h1>
+        </div>
+      </aside>
+      <div className="grow">
+        <h3 className="pt-5 pb-[10px] text-[24px] font-medium">
+          Microposts (50)
+        </h3>
+        <Microposts userId={userId} name={name} image={image} />
+      </div>
     </div>
   );
 };
@@ -51,21 +63,11 @@ const Fallback: FC<FallbackProps> = ({ error: { message } }) => {
 
 const Show: NextPage = () => {
   return (
-    <main className="flex gap-[30px]">
-      <aside className="max-w-[360px] grow">
-        <ErrorBoundary FallbackComponent={Fallback}>
-          <Suspense fallback={<div>Loading user data...</div>}>
-            <User />
-          </Suspense>
-        </ErrorBoundary>
-      </aside>
-      <div className="grow">
-        <h3 className="pt-5 pb-[10px] text-[24px] font-medium">
-          Microposts (50)
-        </h3>
-        <Microposts />
-      </div>
-    </main>
+    <ErrorBoundary FallbackComponent={Fallback}>
+      <Suspense fallback={<div>Loading user data...</div>}>
+        <User />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
