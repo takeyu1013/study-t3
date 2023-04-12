@@ -1,8 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { User } from "@prisma/client";
 import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import type { FC } from "react";
+import { Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -13,8 +16,46 @@ const schema = z.object({
   content: z.string().min(1),
 });
 
+const User: FC<{ userId: User["id"] }> = ({ userId }) => {
+  const {
+    user: {
+      getOneUser: { useSuspenseQuery },
+    },
+  } = api;
+  const [{ id, name, image, micropostCount }] = useSuspenseQuery({ userId });
+
+  return (
+    <>
+      <Image
+        src={
+          image ||
+          "https://secure.gravatar.com/avatar/3671055c9063cfc5f08b7741c8de4802?s=50"
+        }
+        alt="avatar"
+        width={50}
+        height={50}
+        className="h-full"
+      />
+      <div className="leading-none">
+        <h1 className="pb-[3px] text-[19.6px] font-medium tracking-[-1px]">
+          {name}
+        </h1>
+        <Link
+          href={`/users/${id}`}
+          className="text-[14px] text-[#337ab7] hover:text-[#23527c] hover:underline"
+        >
+          view my profile
+        </Link>
+        <span className="block pb-[3px] text-[14px]">
+          {micropostCount} microposts
+        </span>
+      </div>
+    </>
+  );
+};
+
 const Home: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const {
     register,
     handleSubmit,
@@ -28,9 +69,23 @@ const Home: NextPage = () => {
       createMicropost: { useMutation },
     },
   } = api;
-  const { mutate } = useMutation({ onSuccess: () => reset() });
+  const {
+    user: {
+      getOneUser: { invalidate: userInvalidate },
+    },
+    micropost: {
+      infiniteMicroposts: { invalidate: micropostsInvalidate },
+    },
+  } = api.useContext();
+  const { mutate } = useMutation({
+    onSuccess: async () => {
+      reset();
+      await userInvalidate();
+      await micropostsInvalidate();
+    },
+  });
 
-  if (!session) {
+  if (!session && status === "unauthenticated") {
     return (
       <div>
         <div className="rounded-md bg-[#eeeeee] py-12 px-16 text-center">
@@ -68,36 +123,21 @@ const Home: NextPage = () => {
       </div>
     );
   }
+  if (!session) {
+    return <p>Loading...</p>;
+  }
+
   const {
-    user: { image, name, id },
+    user: { id, name, image },
   } = session;
 
   return (
     <div className="flex gap-[30px]">
       <aside className="min-w-[360px]">
         <section className="flex gap-[10px] pt-5 pb-[10px]">
-          <Image
-            src={
-              image ||
-              "https://secure.gravatar.com/avatar/3671055c9063cfc5f08b7741c8de4802?s=50"
-            }
-            alt="avatar"
-            width={50}
-            height={50}
-            className="h-full"
-          />
-          <div className="leading-none">
-            <h1 className="pb-[3px] text-[19.6px] font-medium tracking-[-1px]">
-              {name}
-            </h1>
-            <Link
-              href={`/users/${id}`}
-              className="text-[14px] text-[#337ab7] hover:text-[#23527c] hover:underline"
-            >
-              view my profile
-            </Link>
-            <span className="block pb-[3px] text-[14px]">50 microposts</span>
-          </div>
+          <Suspense>
+            <User userId={id} />
+          </Suspense>
         </section>
         <section className="grow pt-[30px] pb-[10px]">
           <form
@@ -128,11 +168,13 @@ const Home: NextPage = () => {
         <h3 className="pt-5 pb-[10px] text-[24px] font-medium leading-6">
           Micropost Feed
         </h3>
-        <Microposts
-          userId={id}
-          name={name || "Anonymous"}
-          image={image || null}
-        />
+        <Suspense>
+          <Microposts
+            userId={id}
+            name={name || "Anonymous"}
+            image={image || null}
+          />
+        </Suspense>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ const UserData: FC<{ userId: string }> = ({ userId }) => {
       getOneUser: { useSuspenseQuery },
     },
   } = api;
-  const [{ name, image }] = useSuspenseQuery(
+  const [{ name, image, micropostCount }] = useSuspenseQuery(
     { userId },
     {
       onError: ({ message }) => {
@@ -36,7 +36,7 @@ const UserData: FC<{ userId: string }> = ({ userId }) => {
       </aside>
       <div className="grow">
         <h3 className="pt-5 pb-[10px] text-[24px] font-medium">
-          Microposts (50)
+          Microposts ({micropostCount})
         </h3>
         <Microposts userId={userId} name={name} image={image} />
       </div>

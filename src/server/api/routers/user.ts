@@ -21,6 +21,7 @@ export const userRouter = createTRPCRouter({
       ctx: {
         prisma: {
           user: { findUnique },
+          micropost: { count },
         },
       },
       input: { userId: id },
@@ -28,9 +29,10 @@ export const userRouter = createTRPCRouter({
       const user = await findUnique({
         where: { id },
       });
+      const micropostCount = await count({ where: { userId: id } });
 
       if (user) {
-        return user;
+        return { ...user, micropostCount };
       } else {
         throw new TRPCError({
           code: "NOT_FOUND",
