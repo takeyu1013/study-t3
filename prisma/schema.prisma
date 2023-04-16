@@ -41,6 +41,8 @@ model User {
     email          String?     @unique
     passwordDigest String?
     emailVerified  DateTime?
+    resetDigest    String?
+    resetSentAt    DateTime?
     image          String?
     accounts       Account[]
     microposts     Micropost[]
