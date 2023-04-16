@@ -22,10 +22,7 @@ export const passwordResetRouter = createTRPCRouter({
         const bytes = getRandomValues(new Uint8Array(32));
         const token = Array.from(bytes).reduce(r, "");
         console.log("token", token);
-        const resetDigest = await hash(
-          `${token}${env.NEXTAUTH_SECRET || ""}`,
-          10
-        );
+        const resetDigest = await hash(token, 10);
         const user = await update({
           where: { email },
           data: {
@@ -36,9 +33,7 @@ export const passwordResetRouter = createTRPCRouter({
         if (!user) {
           return false;
         }
-        console.log(
-          await compare(`${token}${env.NEXTAUTH_SECRET || ""}`, resetDigest)
-        );
+        console.log(await compare(token, resetDigest));
         return true;
       }
     ),
