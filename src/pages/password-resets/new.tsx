@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -6,7 +7,7 @@ import { api } from "../../utils/api";
 
 const schema = z.object({ email: z.string().email() });
 
-const New = () => {
+const New: NextPage = () => {
   const {
     register,
     handleSubmit,
