@@ -4,7 +4,9 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const schema = z.object({
+import { api } from "../../utils/api";
+
+export const schema = z.object({
   password: z
     .string()
     .min(8)
@@ -14,22 +16,33 @@ const schema = z.object({
 
 const Edit: NextPage = () => {
   const {
-    query: { token },
+    query: { token, email },
   } = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
+  const {
+    passwordReset: {
+      update: { useMutation },
+    },
+  } = api;
+  const { mutate } = useMutation({
+    onSuccess: () => {
+      reset();
+    },
+  });
 
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        if (typeof token !== "string") {
+        if (typeof token !== "string" || typeof email !== "string") {
           return;
         }
-        console.log("token", token);
-        console.log("data", data);
+        console.log(token);
+        mutate({ email, token, ...data });
       })}
     >
       <label>Password</label>
