@@ -73,7 +73,7 @@ const Login: NextPage = () => {
                   </div>
                   <div className="pb-[15px]">
                     <input
-                      className="bordor-[#cccccc] w-full rounded border py-[6px] px-3 text-[14px]"
+                      className="w-full rounded border border-[#cccccc] py-[6px] px-3 text-[14px]"
                       {...register("email")}
                     />
                     {errors.email?.message && <p>{errors.email?.message}</p>}
@@ -81,12 +81,18 @@ const Login: NextPage = () => {
                   <div className="pb-[5px]">
                     <label className="color-[#333333] h-5 text-[14px] font-bold leading-5">
                       Password
-                    </label>
+                    </label>{" "}
+                    <Link
+                      className="text-[14px] text-[#337ab7] hover:text-[#23527c] hover:underline"
+                      href="/password-resets/new"
+                    >
+                      (forgot password)
+                    </Link>
                   </div>
                   <div className="pb-[15px]">
                     <input
                       type="password"
-                      className="bordor-[#cccccc] w-full rounded border py-[6px] px-3 text-[14px]"
+                      className="w-full rounded border border-[#cccccc] py-[6px] px-3 text-[14px]"
                       {...register("password")}
                     />
                     {errors.password?.message && (
@@ -96,7 +102,7 @@ const Login: NextPage = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded border border-[#2e6da4] bg-[#337ab7] py-[6px] px-3 text-[14px] text-white"
+                  className="w-full rounded border border-[#2e6da4] bg-[#337ab7] py-[6px] px-3 text-[14px] text-white hover:bg-[#286090]"
                 >
                   Log in
                 </button>
