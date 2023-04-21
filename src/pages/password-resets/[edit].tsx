@@ -41,7 +41,6 @@ const Edit: NextPage = () => {
         if (typeof token !== "string" || typeof email !== "string") {
           return;
         }
-        console.log(token);
         mutate({ email, token, ...data });
       })}
     >
