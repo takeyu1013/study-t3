@@ -52,7 +52,7 @@ export const micropostRouter = createTRPCRouter({
     )
     .query(
       async ({
-        input: { limit, cursor },
+        input: { userId, limit, cursor },
         ctx: {
           prisma: {
             micropost: { findMany, count },
@@ -66,10 +66,12 @@ export const micropostRouter = createTRPCRouter({
               skip: 1,
               cursor: { id: cursor },
               orderBy: { id: "asc" },
+              where: { userId },
             })
           : await findMany({
               take,
               orderBy: { id: "asc" },
+              where: { userId },
             });
         const total = await count();
         return { items, nextCursor: items.at(-1)?.id, total };
