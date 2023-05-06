@@ -55,7 +55,7 @@ const User: FC<{ userId: User["id"] }> = ({ userId }) => {
 };
 
 const Home: NextPage = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const {
     register,
     handleSubmit,
@@ -85,7 +85,7 @@ const Home: NextPage = () => {
     },
   });
 
-  if (!session && status === "unauthenticated") {
+  if (!session) {
     return (
       <div>
         <div className="rounded-md bg-[#eeeeee] py-12 px-16 text-center">
@@ -122,9 +122,6 @@ const Home: NextPage = () => {
         </div>
       </div>
     );
-  }
-  if (!session) {
-    return <p>Loading...</p>;
   }
 
   const {
